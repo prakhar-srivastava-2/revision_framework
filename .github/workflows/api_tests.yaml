@@ -1,0 +1,32 @@
+name: Api Tests workflow
+on:
+    push:
+        branches: ["master"]
+    pull_request:
+        branches: ["master"]
+jobs:
+    api_tests:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Master
+              uses: "actions/checkout@v4"
+
+            - name: setup java
+              uses: "actions/setup-java@v4"
+              with:
+                java-version: 17
+                distribution: temurin
+                cache: maven
+                cache-dependency-path: revision_framework/pom.xml
+
+            - name: build project
+              working-directory: ./revision_framework
+              run: mvn -B -Dtest=ReqResTest test
+
+            - name: reporting surefire
+              uses: "actions/upload-artifact@v4"
+              if: always()
+              with:
+                name: Surefire report
+                path: revision_framework/target/surefire-reports/
+
