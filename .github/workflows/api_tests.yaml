@@ -17,10 +17,10 @@ jobs:
                 java-version: 17
                 distribution: temurin
                 cache: maven
-                cache-dependency-path: revision_framework/pom.xml
+                cache-dependency-path: pom.xml
 
             - name: build project
-              working-directory: ./revision_framework
+              # working-directory: ./revision_framework
               run: mvn -B -Dtest=ReqResTest test
 
             - name: reporting surefire
@@ -28,5 +28,5 @@ jobs:
               if: always()
               with:
                 name: Surefire report
-                path: revision_framework/target/surefire-reports/
+                path: target/surefire-reports/
 
